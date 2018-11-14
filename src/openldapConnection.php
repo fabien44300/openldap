@@ -92,19 +92,22 @@ class openldapConnection extends Exception {
 
                         $ldapDataUser = $this->getLdapUser($result, $dn, $login, $password);
 
-                        if ($this->LDAP_UPDATEUSER)
+                        if ($ldapDataUser)
                         {
-                            $openldapUser = new $openldapUser();
-                            $user = $openldapUser->createOrUpdateUserFromLdap($login, $ldapDataUser);
-                        }
-                        else
-                        {
-                            $user = new $modelUser();
-                            $fieldAuthUser = $this->LDAP_FIELDAUTHUSER ;
-                            $user->$fieldAuthUser = $login;
+                            if ($this->LDAP_UPDATEUSER)
+                            {
+                                $openldapUser = new $openldapUser();
+                                $user = $openldapUser->createOrUpdateUserFromLdap($login, $ldapDataUser);
+                            }
+                            else
+                            {
+                                $user = new $modelUser();
+                                $fieldAuthUser = $this->LDAP_FIELDAUTHUSER ;
+                                $user->$fieldAuthUser = $login;
+                            }
+                            return $user;
                         }
 
-                        return $user;
                     }
 
                     elseif ($count > 1) {
@@ -112,10 +115,10 @@ class openldapConnection extends Exception {
                         throw new Exception(__("Plus d'une personne a les memes identifiants"));
                     }
                 }
-
-                else {
-                    throw new Exception(__("Le service d'authentification est indisponible."));
-                }
+            }
+            else
+            {
+                throw new Exception(__("Le service d'authentification est indisponible."));
             }
         }
         // Dans le cas où l'authentification echoue, on renvoie un utilisateur vide.
