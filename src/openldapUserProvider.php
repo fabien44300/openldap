@@ -15,15 +15,23 @@ class openldapUserProvider  implements IlluminateUserProvider
     {
         $fieldAuthUser = Config::get('ldap.fieldAuthUser');
         $modelUser =  Config::get('auth.providers.users.model');
-        $user = $modelUser::where($fieldAuthUser, $identifier)->first();
-
-        if (!$user)
+        try
         {
-            $user = new $modelUser();
-            $user->$fieldAuthUser = $identifier;
+            $user = $modelUser::where($fieldAuthUser, $identifier)->first();
+            if (!$user)
+            {
+                $user = new $modelUser();
+                $user->$fieldAuthUser = $identifier;
+            }
         }
+        catch (\Exception $e)
+       {
+           $user = new $modelUser();
+           $user->$fieldAuthUser = $identifier;
+       }
 
         return $user;
+
     }
     /**
      * @param  mixed   $identifier
