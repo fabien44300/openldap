@@ -3,6 +3,7 @@ namespace fabien44300\openldap;
 
 use Exception;
 use Config;
+use Illuminate\Support\Facades\Hash;
 
 
 class openldapConnection extends Exception {
