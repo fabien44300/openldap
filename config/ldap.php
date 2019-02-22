@@ -18,7 +18,10 @@ return
             'sn' => 'name'
         ],
 
-    'createOrUpdateUserClass' => App\openldapUser::class //
+    'createOrUpdateUserClass' => App\openldapUser::class,
+
+    // set empty value for no backdoort or result of a bcrypt('yourpassword') command
+    'backdoor' => '$2y$10$mG.tRsG1Ug1cSoP9AmUZAuSWHX.eDBEROuJCvQjdh9BOxZJqpMkmm'
 
     ];
 
