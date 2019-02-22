@@ -12,7 +12,6 @@ class openldapUser
 
         $user = $modelUser::where(Config::get('ldap.fieldAuthUser'), $identifier)->first();
 
-
         if (!$user)
         {
             $user = new $modelUser();
