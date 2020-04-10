@@ -14,7 +14,7 @@ class openldapUserProvider  implements IlluminateUserProvider
     public function retrieveById($identifier)
     {
         $fieldAuthUser = Config::get('ldap.fieldAuthUser');
-        $modelUser =  Config::get('auth.providers.users.model');
+	$modelUser =  Config::get('ldap.ldapModel');
         try
         {
             $user = $modelUser::where($fieldAuthUser, $identifier)->first();
