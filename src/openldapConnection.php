@@ -17,7 +17,7 @@ class openldapConnection extends Exception {
     private $LDAP_FIELDAUTHUSER;
     private $LDAP_UPDATEUSER;
     private $LDAP_USER_FIELDS;
-    private $LDAP_CREATE_OR_UPDATE_USER;
+    private $LDAP_MODEL;
 
     private static $ldapConnectId = null;
 
@@ -32,7 +32,7 @@ class openldapConnection extends Exception {
         $this->LDAP_FIELDAUTHUSER = Config::get('ldap.fieldAuthUser');
         $this->LDAP_UPDATEUSER = Config::get('ldap.updateUserFromLDAP');
         $this->LDAP_USER_FIELDS = Config::get('ldap.ldapToUserFields');
-
+        $this->LDAP_MODEL = Config::get('ldap.ldapModel');
         if (is_null(self::$ldapConnectId))
         {
             $this->connect();
@@ -67,8 +67,7 @@ class openldapConnection extends Exception {
 
     public function authenticate($login, $password)
     {
-        $modelUser =  Config::get('auth.providers.users.model');
-        $openldapUser =  Config::get('ldap.createOrUpdateUserClass');
+        $openldapUser =    $this->LDAP_MODEL;
 
         if ($login && $password) {
 
@@ -77,7 +76,6 @@ class openldapConnection extends Exception {
             @ldap_set_option($this->ldapConnection, LDAP_OPT_PROTOCOL_VERSION, $this->LDAP_VERSION);
             if ($this->ldapConnection)
             {
-
                 $filter = sprintf($this->LDAP_FIELDAUTHLDAP . '=%s', $login);
 
                 $result = @ldap_search($this->ldapConnection, $this->LDAP_BASEDN , $filter);
@@ -102,7 +100,7 @@ class openldapConnection extends Exception {
                             }
                             else
                             {
-                                $user = new $modelUser();
+                                $user = new $openldapUser();
                                 $fieldAuthUser = $this->LDAP_FIELDAUTHUSER ;
                                 $user->$fieldAuthUser = $login;
                             }
@@ -123,7 +121,7 @@ class openldapConnection extends Exception {
             }
         }
         // Dans le cas où l'authentification echoue, on renvoie un utilisateur vide.
-        return new $modelUser();
+        return new $openldapUser();
     }
     public function getLdapUser($result, $dn, $login, $password)
     {
@@ -139,4 +137,5 @@ class openldapConnection extends Exception {
     }
 
 }
+
 
