@@ -1,0 +1,37 @@
+{
+    "name": "fabien44300/openldap",
+    "description": ":openldap for laravel 5",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Fabien MENARD",
+            "email": "fabien.menard.44@gmail.com",
+            "homepage": "http://www.hairhash.fr"
+        }
+    ],
+    "homepage": "https://github.com/fabien44300/openldap",
+    "keywords": ["Laravel", "openldap"],
+    "require": {
+
+    },
+  "require-dev": {
+  },
+  "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "fabien44300\\openldap\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "fabien44300\\openldap\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "fabien44300\\openldap\\openldapServiceProvider"
+            ]
+        }
+    }
+}
