@@ -11,24 +11,31 @@ use Config;
 class openldapUserProvider  implements IlluminateUserProvider
 {
 
+    private $modelUser;
+
+    function __construct() {
+
+        $this->modelUser =  Config::get('ldap.ldapModel');
+    }
+
     public function retrieveById($identifier)
     {
         $fieldAuthUser = Config::get('ldap.fieldAuthUser');
-	    $modelUser =  Config::get('ldap.ldapModel');
+        //  $modelUser =  Config::get('ldap.ldapModel');
         try
         {
-            $user = $modelUser::where($fieldAuthUser, $identifier)->first();
+            $user = $this->modelUser::where($fieldAuthUser, $identifier)->first();
             if (!$user)
             {
-                $user = new $modelUser();
+                $user = new $this->modelUser();
                 $user->$fieldAuthUser = $identifier;
             }
         }
         catch (\Exception $e)
-       {
-           $user = new $modelUser();
-           $user->$fieldAuthUser = $identifier;
-       }
+        {
+            $user = new $this->modelUser();
+            $user->$fieldAuthUser = $identifier;
+        }
 
         return $user;
 
@@ -40,11 +47,11 @@ class openldapUserProvider  implements IlluminateUserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
-        $model = $this->createModel();
-        
-        return $model->newQuery()
-            ->where($model->getAuthIdentifierName(), $identifier)
-            ->where($model->getRememberTokenName(), $token)
+        $user = new $this->modelUser();
+
+        return $user->newQuery()
+            ->where($user->getAuthIdentifierName(), $identifier)
+            ->where($user->getRememberTokenName(), $token)
             ->first();
     }
     /**
@@ -104,11 +111,11 @@ class openldapUserProvider  implements IlluminateUserProvider
 
     }
 
-    public function createModel()
-    {
-        $class = '\\'.ltrim($this->model, '\\');
-
-        return new $class;
-    }
+//    public function createModel()
+//    {
+//        $class = '\\'.ltrim($this->modelUser, '\\');
+//
+//        return new $class;
+//    }
 
 }
