@@ -47,12 +47,7 @@ class openldapUserProvider  implements IlluminateUserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
-        $user = new $this->modelUser();
-
-        return $user->newQuery()
-            ->where($user->getAuthIdentifierName(), $identifier)
-            ->where($user->getRememberTokenName(), $token)
-            ->first();
+        throw new \Exception("Il n'est pas possible d'utiliser la fonction 'Se souvenir de moi'");
     }
     /**
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
